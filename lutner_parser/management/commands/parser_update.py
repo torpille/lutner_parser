@@ -9,15 +9,15 @@ from lutner_parser.models import Product, Statistics, Pagelink
 class Command(BaseCommand):
     def handle(self, *args, **options):
         
-        pagelinks = []
-        for link in Pagelink.objects.all():
-            pagelinks.append(link.link)
-        with Pool(30) as p:
+        pagelinks = Pagelink.objects.all()
+        # pagelinks = ['https://lutner.ru/catalog/kazu/?set_filter=Y&PAGEN_1=1']
+        with Pool(20) as p:
             p.map(get_statistics, pagelinks)
 
 def get_statistics(pagelink):
     session = requests.Session()
-    url = pagelink +'&cat_type=line'
+    url = pagelink.link +'&cat_type=line'
+    # url = pagelink +'&cat_type=line'
     soup = get_soup(url, session)
     while True:
         try:
@@ -30,8 +30,10 @@ def get_statistics(pagelink):
     
     for item in items:
         count = item.find_all('td')[2].text.strip()
+        if not count:
+            count = 0
         price = item.find_all('td')[3].text.strip()
-        if price == '""':
+        if not price:
             price = 0
         product_link = 'https://lutner.ru' + item.find_all('td')[0].find('a', href=True).get('href')
         product = get_or_none(Product, link=product_link)
@@ -40,6 +42,9 @@ def get_statistics(pagelink):
             update_product(product)
       
         print('statistics', product.name)
+        print(product_link)
+        # statistics = get_or_none(Statistics, product=product)
+        # if not statistics:
         statistics = Statistics(product = product)
         statistics.count = count
         statistics.price = price

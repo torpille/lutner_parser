@@ -14,7 +14,7 @@ def get_soup(url, session=None):
                 html = session.post( url, data=payload, headers=headers, params=querystring).text
             else:
                 html = requests.get(url, timeout = (100, 100)).text
-            soup = BeautifulSoup(html, 'html5lib')
+            soup = BeautifulSoup(html, 'lxml')
             if soup:
                 return soup
         except Exception as e:
@@ -26,9 +26,7 @@ def get_soup(url, session=None):
             broken_links = open("broken links.txt", "w")
             data = broken_links.write(url)
             broken_links.close()
-        
-    
-
+ 
 
 def get_or_none(classmodel, **kwargs):
     try:
@@ -43,19 +41,14 @@ def update_product(product):
     soup = get_soup(url)
     table = soup.find(class_='product-features-table')
     article = table_find('Артикул:', table)
-    broken_links = open("broken links.txt", "w")
-    same_article_product = get_or_none(Product, article=article)
-    if same_article_product:
-        h = open("duplicate_articles.txt", "w")
-        data = h.write(product.link + '\n' + same_article_product.link + '\n \n')
-        h.close()
-
-
-    
+    # same_article_product = get_or_none(Product, article=article)
+    # if same_article_product:
+    #     h = open("duplicate_articles.txt", "w")
+    #     data = h.write(product.link + '\n' + same_article_product.link + '\n \n')
+    #     h.close()
     product.name = soup.find('h1').text
     product.article = article
-    if article == None:
-        data = broken_links.write(url)
+    if article == None
         return
     section_category = soup.find(class_ = 'breadcrumb').text.split('>')
     section_text = section_category[-2].strip()
@@ -76,15 +69,8 @@ def update_product(product):
         brandname.save()
     product.brandname = brandname
     product.save()
-    broken_links.close()
     print(product.name)
     print('done')
-        
-        
-
-
-
-
 
 
 def find_category_links(url):
@@ -93,11 +79,10 @@ def find_category_links(url):
     for third in  soup.findAll('ul', 'third ie'):
         third.extract()
     for a in  soup.findAll('ul', 'second'):
-        # if a.find(class_='third ie'):
-        #         continue
         for href in a.find_all('a', href=True):
             category_links.append( href['href'])
     return category_links
+    
     
 def save_links(link): 
     category_url = 'https://lutner.ru' + link
@@ -118,24 +103,6 @@ def save_links(link):
         if not soup.find('a', href=next_url):
             break
 
- 
-            
-                
-                
-        
-
-    
-    # for href in pages.find_all('a', href=True):
-    #         category_links.append( href['href'])
-    #             full_link = ('https://lutner.ru' + elem)
-    #             page_links.append(full_link)
-    #             pagelink = get_or_none(Pagelink, link=full_link)
-    #             if not pagelink:
-    #                 pagelink = Pagelink(link=full_link)
-    #                 pagelink.save()
-    
-    
-    # return page_links
 
 def save_links_to_db(soup):
     items = soup.find_all( class_='product-item-title')

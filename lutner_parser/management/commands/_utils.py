@@ -40,6 +40,8 @@ def update_product(product):
     url = product.link  
     soup = get_soup(url)
     table = soup.find(class_='product-features-table')
+    if not table:
+        return
     article = table_find('Артикул:', table)
     # same_article_product = get_or_none(Product, article=article)
     # if same_article_product:
@@ -48,8 +50,8 @@ def update_product(product):
     #     h.close()
     product.name = soup.find('h1').text
     product.article = article
-    if article == None:
-        return
+    # if article == None:
+    #     return
     section_category = soup.find(class_ = 'breadcrumb').text.split('>')
     section_text = section_category[-2].strip()
     category_text = section_category[-1].strip()
@@ -62,12 +64,13 @@ def update_product(product):
         category = Category(name=category_text, section=section)
         category.save()
     product.category=category
-    brandname_text = soup.find(class_='product-features-table').find_all('tr')[0].find_all('td')[1].text
-    brandname = get_or_none(Brandname, name=brandname_text)
-    if not brandname:
-        brandname = Brandname(name=brandname_text)
-        brandname.save()
-    product.brandname = brandname
+    brandname_text = table_find('Производитель:', table)
+    if brandname_text:
+        brandname = get_or_none(Brandname, name=brandname_text)
+        if not brandname:
+            brandname = Brandname(name=brandname_text)
+            brandname.save()
+        product.brandname = brandname
     product.save()
     print(product.name)
     print('done')

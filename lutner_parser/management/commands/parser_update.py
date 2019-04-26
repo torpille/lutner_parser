@@ -1,42 +1,53 @@
 from bs4 import BeautifulSoup
 import requests
 from django.core.management.base import BaseCommand, CommandError
+from multiprocess import Pool
 from .config import querystring, payload, headers
-from ._utils import find_item_links, find_category_links, find_page_links, get_or_none
-from lutner_parser.models import Product, Statistics
+from ._utils import  update_product, get_or_none, get_soup
+from lutner_parser.models import Product, Statistics, Pagelink
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        session = requests.Session()
-        category_links = find_category_links('https://lutner.ru/catalog/')
-        # page_links = set()
-        # for link in category_links:
-        #     page_links.update(find_page_links(link))
-        page_links = ['https://lutner.ru/catalog/klassicheskie_gitary//?PAGEN_1=1']
-        for url in page_links:
-            url = url+'&cat_type=line'
+        
+        pagelinks = []
+        for link in Pagelink.objects.all():
+            pagelinks.append(link.link)
+        with Pool(30) as p:
+            p.map(get_statistics, pagelinks)
 
-            response = session.post( url, data=payload, headers=headers, params=querystring)
-
-            soup = BeautifulSoup(response.text, 'html5lib')
-
-
-            h = open("test.txt", "w")
-            data = h.write(soup.prettify())
-            h.close()
-            
-         
+def get_statistics(pagelink):
+    session = requests.Session()
+    url = pagelink +'&cat_type=line'
+    soup = get_soup(url, session)
+    while True:
+        try:
             items = soup.find(id='tech_char_table').find_all('tr')[1:]
-            
-            for item in items:
-                count = item.find_all('td')[2].text.strip()
-                price = item.find_all('td')[3].text.strip()
-                product_link = 'https://lutner.ru' + item.find_all('td')[0].find('a', href=True).get('href')
-                
-                product = get_or_none(Product, link=product_link)
-                if product:
-                    print('statistics', product.name)
-                    statistics = Statistics(product = product)
-                    statistics.count = count
-                    statistics.price = price
-                    statistics.save()
+            break
+        except AttributeError:
+            soup = get_soup(url, session)
+            print('retry')
+
+    
+    for item in items:
+        count = item.find_all('td')[2].text.strip()
+        price = item.find_all('td')[3].text.strip()
+        if price == '""':
+            price = 0
+        product_link = 'https://lutner.ru' + item.find_all('td')[0].find('a', href=True).get('href')
+        product = get_or_none(Product, link=product_link)
+        if not product:
+            product = Product(link=product_link)
+            update_product(product)
+      
+        print('statistics', product.name)
+        statistics = Statistics(product = product)
+        statistics.count = count
+        statistics.price = price
+        try:    
+            statistics.save()
+        except ValueError:
+            statistics.price = 0
+            statistics.count = 0
+            statistics.save()
+
+

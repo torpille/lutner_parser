@@ -26,9 +26,9 @@ class Brandname(models.Model):
 
 #Товары
 class Product(models.Model):
-    article = models.CharField(max_length=50)
-    name = models.CharField(max_length=100)
-    link = models.CharField(max_length=100, unique=True)
+    article = models.CharField(max_length=50, blank=True, null=True)
+    name = models.CharField(max_length=200, blank=True, null=True)
+    link = models.CharField(max_length=254, unique=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, blank=True, null=True)
     brandname = models.ForeignKey(Brandname, on_delete=models.PROTECT, blank=True, null=True)
     def __str__(self):
@@ -41,8 +41,12 @@ class Statistics(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     date = models.DateTimeField(default=timezone.now)
     count = models.IntegerField()
-    price = models.FloatField()
+    price = models.FloatField(blank=True, null=True)
     def __str__(self):
         string = '{} {} {} {}'.format(self.product, self.date, self.count, self.price)
         return  string
 
+class Pagelink(models.Model):
+    link = models.CharField(max_length=254, unique=True)
+    def __str__(self):
+        return  self.link

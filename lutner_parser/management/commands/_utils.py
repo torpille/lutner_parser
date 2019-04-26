@@ -43,12 +43,12 @@ def update_product(product):
     article = table_find('Артикул:', table)
     # same_article_product = get_or_none(Product, article=article)
     # if same_article_product:
-    #     h = open("duplicate_articles.txt", "w")
+    #     h = open("duplicate_articles.txt", "a")
     #     data = h.write(product.link + '\n' + same_article_product.link + '\n \n')
     #     h.close()
     product.name = soup.find('h1').text
     product.article = article
-    if article == None
+    if article == None:
         return
     section_category = soup.find(class_ = 'breadcrumb').text.split('>')
     section_text = section_category[-2].strip()
@@ -82,7 +82,7 @@ def find_category_links(url):
         for href in a.find_all('a', href=True):
             category_links.append( href['href'])
     return category_links
-    
+
     
 def save_links(link): 
     category_url = 'https://lutner.ru' + link

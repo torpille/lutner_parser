@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+{% load tz %}{% timezone "Europe/Samara" %}
+<head>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+<link rel="stylesheet" type="text/css" href="/static/admin/css/changelists.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<title>{% block title %}{% endblock %}</title>
+{% block extrahead %}{% endblock %}
+</head>
+<body>
+  {% block sidebar %}
+  <ul class="sidebar-nav">
+   {% if user.is_authenticated %}
+     <li>Пользователь: {{ user.get_username }}</li>
+     <li><a href="{% url 'logout'%}?next={{request.path}}">Выйти</a></li>   
+   {% else %}
+     <li><a href="{% url 'login'%}?next={{request.path}}">Войти</a></li>   
+   {% endif %} 
+  </ul><!-- insert default navigation text for every page -->{% endblock %}
+  {% block content %}<!-- default content text (typically empty) -->{% endblock %}
+</body>
+
+{% endtimezone %}
+</html>

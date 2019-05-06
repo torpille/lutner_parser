@@ -1,0 +1,91 @@
+{% extends "base_generic.html" %}
+{% block extrahead %}
+<script type="text/javascript">
+    {% include "js/fun_filter.js" %}
+	$(document).ready(function(){ // вызывается, когда html-содержимое страницы загружено
+		$("#filter_form input").on("input", function(e){ // обработка события ввода
+			 	filter_results("#filter_form", "#catalog_results", "{{ request.get_full_path }}");			
+		})
+		$("#filter_sort").on("change", function(e){ // обработка события ввода
+			 	filter_results("#filter_form", "#catalog_results", "{{ request.get_full_path }}");			
+		})
+		$("#change_cat").on("change", function(e){ // обработка события ввода
+			 	filter_results("#filter_form", "#catalog_results", "{{ request.get_full_path }}");			
+		})
+
+
+	})
+</script>
+{% endblock %}
+
+{% block content %}
+
+<form action="{{ request.get_full_path }}"  method="post" id="filter_form" name="filter_form">
+	<label>Артикул</label>
+	<input type="text" name="filter_art">
+	<label>Имя</label>
+	<input type="text" name="filter_name">
+	<label >Категория</label>
+	<input type="text" name="filter_cat">
+	<label >Сортировка</label>
+	<select id="filter_sort" name="filter_sort">
+	    <option value="article" selected>Артикул</option>
+	    <option value="-article">Артикул убыв.</option>
+	    <option value="name">Имя</option>
+	    <option value="-name">Имя убыв.</option>
+	    <option value="count">Кол-во</option>
+	    <option value="-count">Кол-во убыв.</option>
+	    <option value="price">Цена</option>
+	    <option value="-price">Цена убыв.</option>
+	    <option value="category">Категория</option>
+	    <option value="-category">Категория убыв.</option>
+    </select>	
+    <select id="change_cat" name="change_cat">
+    	<option value="all" selected>Все</option>
+    	{% for i in cat %}
+    	<option value="{{ i.id }}">{{ i }}</option>
+    	{% endfor %}
+
+    </select>
+	{% csrf_token %}
+</form>
+
+
+<table style="width: 100%;">
+<tbody id="catalog_results">
+<tr>
+	<th>Артикул</th>
+	<th>Имя</th>
+	<th>Кол-во</th>
+	<th>Цена</th>
+	<th>Бренд</th>
+	<th>Категория</th>
+
+</tr> 
+
+{% for q in qw.all %}
+<tr>
+	<td><a title="{{ q.name }}" href="{{ q.link }}" target="_blank">{{ q.article }}</a></td>
+	<td><a title="{{ q.name }}" href="{{ q.id }}">{{ q.name }}</a></td>
+
+	<td {% for k, i in a.items %}
+			{% if k == q.id %}
+				{% if i.0 == 1 %}style="background: green;"
+				{% elif i.0 == 2 %}style="background: red;" 
+				{% endif %}
+			{% endif %}
+		{% endfor %}>{{ q.count }}</td>
+	<td {% for k, i in a.items %}
+			{% if k == q.id %}
+				{% if i.1 == 1 %}style="background: green;"
+				{% elif i.1 == 2 %}style="background: red;" 
+				{% endif %}
+			{% endif %}
+		{% endfor %}>{{ q.price }}</td>
+	<td>{{ q.brandname }}</td>
+	<td>{{ q.category }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}

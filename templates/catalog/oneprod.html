@@ -1,0 +1,50 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>{{ prod.name }}</h1>
+<table>
+<tbody>
+<tr>
+	<th>Артикул</th>
+	<td>{{ prod.article }}</td>
+</tr> 
+<tr> 
+	<th>Имя</th>
+	<td>{{ prod.name }}</td>
+</tr> 
+<tr>
+	<th>Бренд</th>
+	<td>{{ prod.brandname }}</td>
+</tr> 
+<tr>	
+	<th>Категория</th>
+	<td>{{ prod.category }}</td>
+</tr> 
+<tr>	
+	<th>Ссылка</th>
+	<td><a title="{{ prod.name }}" href="{{ prod.link }}" target="_blank">Ссылка на сайт</a></td>
+</tr> 
+</tbody>
+</table>
+<h2>Статистика</h2>
+
+<table style="width: 100%;">
+<tbody>
+<tr>
+	<th>Дата</th>
+	<th>Кол-во</th>
+	<th>Цена</th>
+</tr> 
+{% for i in stat.all %}
+<tr>
+	<td>{{ i.date }}</td>
+	<td>{{ i.count }}</td>
+	<td>{{ i.price }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+
+
+{% endblock %}

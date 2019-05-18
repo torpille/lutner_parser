@@ -1,0 +1,9 @@
+#!/bin/bash
+date >> /home/box/parser/log/log
+source /home/box/parser/parsenv/bin/activate  2>> /home/box/parser/log/errlog-$(date +%y%m%d)
+echo "env" >> /home/box/parser/log/log
+python /home/box/parser/manage.py parser_init 2>> /home/box/parser/log/errlog-$(date +%y%m%d)
+echo "init" >> /home/box/parser/log/log
+python /home/box/parser/manage.py parser_update 2>> /home/box/parser/log/errlog-$(date +%y%m%d)
+echo "update" >> /home/box/parser/log/log
+echo "-------------------------------------------------------------------------------------------------------------" >> /home/box/parser/log/log

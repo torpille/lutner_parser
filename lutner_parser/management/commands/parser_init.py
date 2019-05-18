@@ -15,7 +15,7 @@ class Command(BaseCommand):
         with Pool(30) as p:
             p.map(save_links, category_links)
         
-        products = Product.objects.filter(article=None)
+        products = Product.objects.filter(article=None, name=None)
             
         with Pool(20) as p:
             p.map(update_product, products)

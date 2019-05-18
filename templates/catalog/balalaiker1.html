@@ -1,0 +1,30 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<table style="width: 100%;">
+<tbody id="part_results">
+<tr>
+	<th>Артикул</th>
+	<th>Имя</th>
+	<th>Бренд</th>
+	<th>Категория</th>
+	<th>Дата</th>
+	<th>Кол-во</th>
+	<th>Цена</th>
+</tr> 
+
+{% for q in qw.all %}
+<tr>
+	<td><a title="{{ q.product.name }}" href="{{ q.product.link }}" target="_blank">{{ q.product.article }}</a></td>
+	<td><a title="{{ q.product.name }}" href="{{ q.product.id }}" target="_blank">{{ q.product.name }}</a></td>
+	<td>{{ q.product.brandname }}</td>
+	<td>{{ q.product.category }}</td>
+	<td>{{ q.date }}</td>
+	<td>{{ q.count }}</td>
+	<td>{{ q.price }}</td>
+
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}

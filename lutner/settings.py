@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'lutner.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'lp_test',
+        'NAME': 'lutner_db',
         'USER': 'django_admin',
         'PASSWORD': 'admin',
         'CHARSET': 'utf8',

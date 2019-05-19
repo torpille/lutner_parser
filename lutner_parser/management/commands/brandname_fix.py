@@ -32,12 +32,13 @@ class Command(BaseCommand):
             while True:
                 bn=get_or_none(Brandname, id=doublers[i][1])
                 if bn:
+                    print(bn.name, doublers[i][1])
                     doubled = get_or_none(Product, brandname=bn)
                     
                     if doubled:
-                        print(doubled.name)
+                        
                         doubled.brandname = get_or_none(Brandname, id=doublers[i][0])
-                        print(doubled.name, '8')
+                        print(doubled.name, doubled.brandname, doublers[i][0])
                         continue
 
                     else:

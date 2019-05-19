@@ -30,11 +30,12 @@ class Command(BaseCommand):
 
         for i in range(len(doublers)):
             doubled = get_or_none(Product, brandname=doublers[i][1])
-            while doubled:
-                doubled.brandname = get_or_none(Brandname, name=doublers[i][0])
-                
-            else:
-                b = get_or_none(Brandname, id=doublers[i][1])
-                b.name = '---'
-                print('done')
-               
+            while True:
+                if doubled:
+                    doubled.brandname = get_or_none(Brandname, name=doublers[i][0])
+
+                else:
+                    b = get_or_none(Brandname, id=doublers[i][1])
+                    b.name = '---'
+                    print('done')
+                    return

@@ -37,5 +37,5 @@ class Command(BaseCommand):
                 else:
                     b = get_or_none(Brandname, id=doublers[i][1])
                     b.name = '---'
-                    print('done')
-                    continue
+                    print(doublers[i][0],'done')
+                    break

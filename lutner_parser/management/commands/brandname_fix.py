@@ -38,4 +38,4 @@ class Command(BaseCommand):
                     b = get_or_none(Brandname, id=doublers[i][1])
                     b.name = '---'
                     print('done')
-                    return
+                    continue

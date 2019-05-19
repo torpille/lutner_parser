@@ -36,12 +36,13 @@ class Command(BaseCommand):
                     doubled = get_or_none(Product, brandname=bn)
                     
                     if doubled:
-                        
+                        print(doubled.name, 'doubled')
                         doubled.brandname = get_or_none(Brandname, id=doublers[i][0])
                         print(doubled.name, doubled.brandname, doublers[i][0])
                         return
 
                     else:
+                        print('no products')
                         b = get_or_none(Brandname, id=doublers[i][1])
                         b.name = '---'
                         print(doublers[i][0],'done')

@@ -1,7 +1,7 @@
 # from bs4 import BeautifulSoup
 from django.core.management.base import BaseCommand, CommandError
 from multiprocess import Pool
-from ._utils import create_product, find_all_item_links, find_category_links, get_or_none
+from ._utils import get_or_none
 from lutner_parser.models import Brandname, Product
 # import requests
 # import time

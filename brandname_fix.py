@@ -29,7 +29,7 @@ class Command(BaseCommand):
 
 
         for i in range(len(doublers)):
-            гdoubled = get_or_none(Product, brandname=doublers[i][1])
+            doubled = get_or_none(Product, brandname=doublers[i][1])
             if doubled:
                 doubled.brandname = doublers[i][0]
                 continue

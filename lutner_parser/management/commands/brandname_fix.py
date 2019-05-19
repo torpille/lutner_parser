@@ -40,7 +40,7 @@ class Command(BaseCommand):
                         doubled.brandname = get_or_none(Brandname, id=doublers[i][0])
                         print(doubled.name, doubled.brandname.id, doublers[i][0])
                         doubled.save()
-                        return
+                        continue
 
                     else:
                         print('no products')

@@ -29,8 +29,9 @@ class Command(BaseCommand):
 
 
         for i in range(len(doublers)):
-            doubled = get_or_none(Product, brandname=doublers[i][1])
             while True:
+            doubled = get_or_none(Product, brandname=doublers[i][1])
+            
                 if doubled:
                     doubled.brandname = get_or_none(Brandname, id=doublers[i][0])
                     print(doubled.name)

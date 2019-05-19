@@ -28,14 +28,14 @@ class Command(BaseCommand):
 
 
         for i in range(len(doublers)):
-        doubled = get_or_none(Product, brandname=doublers[i][1])
-        if doubled:
-            doubled.brandname = doublers[i][0]
-            continue
-        else:
-            b = get_or_none(Brandname, id=doublers[i][1])
-            b.name = '---'
-            return
+            doubled = get_or_none(Product, brandname=doublers[i][1])
+            if doubled:
+                doubled.brandname = doublers[i][0]
+                continue
+            else:
+                b = get_or_none(Brandname, id=doublers[i][1])
+                b.name = '---'
+                return
 
         # category_links = find_category_links('https://lutner.ru/catalog/')
         # h = open("test11.txt", "w")

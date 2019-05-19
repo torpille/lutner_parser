@@ -39,7 +39,7 @@ class Command(BaseCommand):
                         
                         doubled.brandname = get_or_none(Brandname, id=doublers[i][0])
                         print(doubled.name, doubled.brandname, doublers[i][0])
-                        continue
+                        return
 
                     else:
                         b = get_or_none(Brandname, id=doublers[i][1])

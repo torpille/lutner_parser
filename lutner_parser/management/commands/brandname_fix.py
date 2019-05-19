@@ -32,9 +32,9 @@ class Command(BaseCommand):
             doubled = get_or_none(Product, brandname=doublers[i][1])
             if doubled:
                 doubled.brandname = doublers[i][0]
-                continue
+                
             else:
                 b = get_or_none(Brandname, id=doublers[i][1])
                 b.name = '---'
                 print('done')
-                return
+               

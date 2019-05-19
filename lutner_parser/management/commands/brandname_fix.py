@@ -33,8 +33,9 @@ class Command(BaseCommand):
                 bn=get_or_none(Brandname, id=doublers[i][1])
                 if bn:
                     doubled = get_or_none(Product, brandname=bn)
-                    print(doubled.name)
+                    
                     if doubled:
+                        print(doubled.name)
                         doubled.brandname = get_or_none(Brandname, id=doublers[i][0])
                         print(doubled.name, '8')
                         continue

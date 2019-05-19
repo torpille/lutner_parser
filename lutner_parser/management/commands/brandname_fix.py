@@ -39,7 +39,7 @@ class Command(BaseCommand):
                         print(doubled.name, 'doubled', doubled.brandname.id)
                         doubled.brandname = get_or_none(Brandname, id=doublers[i][0])
                         print(doubled.name, doubled.brandname.id, doublers[i][0])
-                        product.save()
+                        doubled.save()
                         return
 
                     else:
@@ -47,5 +47,5 @@ class Command(BaseCommand):
                         b = get_or_none(Brandname, id=doublers[i][1])
                         b.name = '---'
                         print(doublers[i][0],'done')
-                        brandname.save()
+                        b.save()
                         break

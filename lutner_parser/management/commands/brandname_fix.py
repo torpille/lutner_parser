@@ -34,6 +34,7 @@ class Command(BaseCommand):
                 if doubled:
                     doubled.brandname = get_or_none(Brandname, id=doublers[i][0])
                     print(doubled.name)
+                    continue
 
                 else:
                     b = get_or_none(Brandname, id=doublers[i][1])

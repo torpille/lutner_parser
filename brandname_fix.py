@@ -20,7 +20,7 @@ class Command(BaseCommand):
             b_info = [bn.name , bn.id]
             brandnames_list.append(b_info)
         for i in range(len(brandnames_list)):
-            for j in range(i,len(brandnames_list)):
+            for j in range(i+1,len(brandnames_list)):
                 if brandnames_list[i][0] == brandnames_list[j][0]:
                     print(brandnames_list[i][0])
                     d = [brandnames_list[i][1], brandnames_list[j][1]]

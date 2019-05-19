@@ -1,8 +1,8 @@
 # from bs4 import BeautifulSoup
 from django.core.management.base import BaseCommand, CommandError
 from multiprocess import Pool
-# from ._utils import  find_all_item_links, find_category_links
-from lutner_parser.models import Brandname
+from ._utils import create_product, find_all_item_links, find_category_links, get_or_none
+from lutner_parser.models import Brandname, Product
 # import requests
 # import time
 # import traceback
@@ -20,12 +20,22 @@ class Command(BaseCommand):
             b_info = [bn.name , bn.id]
             brandnames_list.append(b_info)
         for i in range(len(brandnames_list)):
-            for j in range(i+1,len(brandnames_list)):
+            for j in range(i,len(brandnames_list)):
                 if brandnames_list[i][0] == brandnames_list[j][0]:
                     d = [brandnames_list[i][1], brandnames_list[j][1]]
                     doublers.append(d)
         print(doublers)
 
+
+        for i in range(len(doublers)):
+        doubled = get_or_none(Product, brandname=doublers[i][1])
+        if doubled:
+            doubled.brandname = doublers[i][0]
+            continue
+        else:
+            b = get_or_none(Brandname, id=doublers[i][1])
+            b.name = '---'
+            return
 
         # category_links = find_category_links('https://lutner.ru/catalog/')
         # h = open("test11.txt", "w")

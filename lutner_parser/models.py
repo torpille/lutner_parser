@@ -33,6 +33,8 @@ class Product(models.Model):
     brandname = models.ForeignKey(Brandname, on_delete=models.PROTECT, blank=True, null=True)
     count = models.IntegerField(blank=True, null=True, default=0)
     price = models.FloatField(blank=True, null=True, default=0)
+    control_count = models.IntegerField(blank=True, null=True, default=0)
+    control_check = models.BooleanField(default=False)
     def __str__(self):
         string = '{} {}'.format(self.brandname, self.article)
         return  string

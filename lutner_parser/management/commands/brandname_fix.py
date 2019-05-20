@@ -49,3 +49,5 @@ class Command(BaseCommand):
                         print(doublers[i][0],'done')
                         b.save()
                         break
+                  
+        Brandname.objects.filter(name='---').delete()

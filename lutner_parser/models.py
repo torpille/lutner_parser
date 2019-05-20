@@ -14,6 +14,7 @@ class Section(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=100)
     section = models.ForeignKey(Section, on_delete=models.PROTECT)
+    url = models.CharField(max_length=200, blank=True, null=True)
     def __str__(self):
         string = '{} {}'.format(self.name, self.section)
         return  string
@@ -50,7 +51,9 @@ class Statistics(models.Model):
         string = '{} {} {} {}'.format(self.product, self.date, self.count, self.price)
         return  string
 
-class Pagelink(models.Model):
-    link = models.CharField(max_length=254, unique=True)
-    def __str__(self):
-        return  self.link
+
+class Pagelink(models.Model): 
+    link = models.CharField(max_length=254, unique=True) 
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, blank=True, null=True) 
+    def __str__(self): 
+        return self.link
